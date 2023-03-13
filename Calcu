@@ -1,0 +1,168 @@
+import kotlin.math.pow
+import kotlin.math.sqrt
+
+val list = mutableListOf<String>()
+val calc = Operatorations()
+var num3: Double? = null
+
+
+
+fun main() {
+
+    print("Enter equation:")
+    var input: String? = readlnOrNull()
+
+    while (!input.isNullOrBlank()) {
+        val values: List<String> = input.split(' ')
+
+        if (values.size == 1) {
+            if (values[0] == "H"){
+                when (values[0]) {
+                    "H" -> calc.history(list)
+                    else -> print("bobo")
+                }
+            }
+            if (values[0] == "sqr" || values[0] == "%" || values[0] == "!" || values[0] == "tan" || values[0] == "sin" || values[0] == "cos"){
+                val answer = when (values[0]) {
+                    "%" -> calc.percentage(num3!!)
+                    "sqr" -> calc.squareRoot(num3!!)
+                    "!" -> calc.factorial(num3!!)
+                    "tan" -> calc.tan(num3!!)
+                    "sin" -> calc.sin(num3!!)
+                    "cos" -> calc.cos(num3!!)
+
+
+
+                    else -> throw IllegalArgumentException("INVALID OPERATOR:")
+                }
+
+                println(answer)
+                list.add("$num3  = $answer")
+                num3 = answer
+
+            }
+
+
+        } else if (values.size == 2){
+            if (values[0] == "+" || values[0] == "-" ||values[0] == "/" ||values[0] == "*"||values[0] == "mod"||values[0] == "^" ){
+                val operator: String = values[0]
+                val num1 = values[1].toDoubleOrNull() ?: throw IllegalArgumentException("INVALID INPUT: ${values[0]}")
+
+                val answer = when (operator) {
+                    "+" -> calc.addition(num3!!,num1)
+                    "-" -> calc.subtraction(num3!!,num1)
+                    "*" -> calc.multiplication(num3!!,num1)
+                    "/" -> calc.division(num3!!,num1)
+                    "mod" -> calc.modulo(num3!!,num1)
+                    "^" -> calc.power(num3!!,num1)
+
+                    else -> throw IllegalArgumentException("INVALID OPERATOR: $operator")
+                }
+                print("Answer: ")
+                println(answer)
+                list.add("$num3 $operator $num1 = $answer")
+                num3 = answer
+
+
+            }else {
+                val operator: String = values[0]
+                val num1 = values[1].toDoubleOrNull() ?: throw IllegalArgumentException("INVALID INPUT: ${values[0]}")
+                val answer = when (operator) {
+                    "%" -> calc.percentage(num1)
+                    "sqr" -> calc.squareRoot(num1)
+                    "!" -> calc.factorial(num1)
+                    "tan" -> calc.tan(num1)
+                    "cos" -> calc.cos(num1)
+                    "sin" -> calc.sin(num1)
+
+                    else -> throw IllegalArgumentException("INVALID OPERATOR: $operator")
+                }
+                print("Answer: ")
+                println(answer)
+                num3 = answer
+                list.add("$operator $num1 = $answer")
+            }
+        }else {
+            val operator: String = values[1]
+            val num1 = values[0].toDoubleOrNull() ?: throw IllegalArgumentException("INVALID INPUT: ${values[0]}")
+            val num2 = values[2].toDoubleOrNull() ?: throw IllegalArgumentException("INVALID INPUT: ${values[2]}")
+
+            val answer = when (operator) {
+                "+"   -> calc.addition(num1,num2)
+                "-"   -> calc.subtraction(num1,num2)
+                "*"   -> calc.multiplication(num1,num2)
+                "/"   -> calc.division(num1,num2)
+                "mod" -> calc.modulo(num1,num2)
+                "^"   -> calc.power(num1,num2)
+
+
+                else -> throw IllegalArgumentException("INVALID OPERATOR: $operator")
+            }
+            print("Answer: ")
+            println(answer)
+            num3 = answer
+            list.add("$num1 $operator $num2 = $num3")
+
+
+        }
+        println(" ")
+        print("Enter equation:")
+        input = readlnOrNull()
+    }
+}
+class Operatorations{
+
+    fun addition(a: Double, b: Double): Double {
+        return a + b
+    }
+    fun subtraction(a: Double, b: Double): Double {
+        return a - b
+    }
+    fun multiplication(a: Double, b: Double): Double {
+        return a * b
+    }
+    fun modulo(a: Double, b: Double): Double {
+        return a % b
+    }
+    fun power(a: Double, b: Double): Double {
+        return a.pow(b)
+    }
+    fun percentage(a: Double): Double {
+        return a / 100
+    }
+    fun squareRoot(a: Double): Double{
+        return sqrt(a)
+    }
+    fun tan(a: Double): Double {
+        return kotlin.math.tan(a)
+    }
+    fun sin(a:Double): Double{
+        return kotlin.math.sin(a)
+    }
+    fun cos(a:Double): Double{
+        return kotlin.math.cos(a)
+    }
+    fun factorial(a: Double): Double {
+        var fac = 1.0
+        for(i in 1..a.toLong()){
+            fac *= i
+        }
+        return fac
+    }
+
+    fun division(a: Double, b: Double): Double {
+        var ans = 0.0
+        if (b == 0.00){
+            println("Cannot divide by 0")
+        } else{
+            ans = a / b
+        }
+        return ans
+    }
+
+    fun history(his: List<String>){
+        for((count, _) in his.withIndex()){
+            println(his[count])
+        }
+    }
+}
